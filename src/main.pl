@@ -32,7 +32,7 @@ answer(_, _, _, 'Desculpe, mas não encontramos um time de futebol para você.')
 start_quiz :-
     ask_questions(1, X, Y, Z),
     answer(X, Y, Z, Answer),
-    write(Answer), nl.
+    write(Answer), nl, exit.
 
 ask_questions(N, X, Y, Z) :-
     question(N, Text, Choices),
