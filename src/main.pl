@@ -1,3 +1,6 @@
+question(1, 'What is your favorite color?', ['Green', 'Blue', 'Red', 'Yellow'], 1).
+question(2, 'What is your age?', ['21', '23', '32', '35'], 2).
+
 menu :-
     write('Bem-vindo ao Quiz! Escolha uma das opções abaixo:'), nl,
     write('1 - Iniciar o quiz'), nl,
@@ -6,9 +9,35 @@ menu :-
     menu_option(Choice).
 
 % handle the menu options
-menu_option(1) :- write('Iniciar o quiz\n\n'), nl, menu.
+menu_option(1) :- ask_questions(1).
 menu_option(2) :- exit.
 menu_option(_):- write('Não é uma opção válida\n\n'), nl, menu.
+
+ask_questions(N) :-
+    question(N, Text, Choices, Correct),
+    write(Text), nl,
+    write_choices(Choices, 1),
+    read(Answer),
+    check_answer(Answer, Correct),
+    Next is N + 1,
+    ask_questions(Next).
+ask_questions(_) :-
+    write('Quiz completed.'), nl, exit.
+
+% write the multiple choice options
+write_choices([H|T], N) :-
+    write(N), write('. '), write(H), nl,
+    Next is N + 1,
+    write_choices(T, Next).
+write_choices([], _) :- nl.
+
+% check the answer and print the result
+check_answer(Answer, Correct) :-
+    Answer =:= Correct,
+    write('Correct!'), nl.
+check_answer(Answer, Correct) :-
+    Answer =\= Correct,
+    write('Incorrect.'), nl.
 
 % exit the program
 exit :- halt.
