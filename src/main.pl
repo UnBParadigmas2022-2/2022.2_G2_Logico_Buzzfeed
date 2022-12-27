@@ -1,5 +1,5 @@
-question(1, 'What is your favorite color?', ['Green', 'Blue', 'Red', 'Yellow'], 1).
-question(2, 'What is your age?', ['21', '23', '32', '35'], 2).
+% load the quiz questions from a file
+:- consult('questions.pl').
 
 menu :-
     write('Bem-vindo ao Quiz! Escolha uma das opções abaixo:'), nl,
