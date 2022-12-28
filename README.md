@@ -31,9 +31,30 @@ Insira um manual ou um script para auxiliar ainda mais.
 Gifs animados e outras ilustrações são bem-vindos!
 
 ## Uso 
-Explique como usar seu projeto.
-Procure ilustrar em passos, com apoio de telas do software, seja com base na interface gráfica, seja com base no terminal.
-Nessa seção, deve-se revelar de forma clara sobre o funcionamento do software.
+Este repositório contém um Dockerfile para criar uma imagem Docker. Para usar a aplicação é necessário executar esta imagem.
+
+### Pré-requisitos
+
+- O [Docker](https://www.docker.com/) deve estar instalado em sua máquina.
+
+### Criando a Imagem
+
+Para criar a imagem Docker, execute o seguinte comando na raiz deste repositório:
+
+```bash
+docker build -t nome_da_imagem .
+```
+
+Isso criará a imagem com o nome nome_da_imagem. Você pode escolher qualquer nome desejar para a imagem.
+
+### Executando a Imagem
+Para executar a imagem Docker, use o seguinte comando:
+
+```bash
+docker run -it nome_da_imagem
+```
+
+Isso iniciará um novo container baseado na imagem e abrirá um terminal no container.
 
 ## Vídeo
 Adicione 1 ou mais vídeos com a execução do projeto.
