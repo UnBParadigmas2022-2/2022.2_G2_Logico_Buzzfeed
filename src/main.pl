@@ -56,19 +56,19 @@ consumeList(AnswerModel, AnswerList, Coincidence, N, OtherTeams, ListF, FinalLis
     (Elem =:= Elem2 ->  Coincidences is Coincidence + 1; Coincidences is Coincidence),
     Next is N + 1,
     consumeList(AnswerModel, AnswerList, Coincidences, Next, OtherTeams, ListF, FinalList).
-consumeList(_, AnswerList, Coincidences, 5, OtherTeams, ListF, FinalList) :-  insert_answer(ListF, Coincidences, Z), compareAnswer(OtherTeams, AnswerList, 0, Z, FinalList).
+consumeList(_, AnswerList, Coincidences, 5, OtherTeams, ListF, FinalList) :-  insert_answer(ListF, Coincidences, Z), compareAnswer(OtherTeams, AnswerList, Z, FinalList).
 
 % method that return each model of "teams" on KB
-compareAnswer([[AnswerModel|[Team|[]]]|OtherTeams], AnswerList, N, List, FinalList) :- 
+compareAnswer([[AnswerModel|_]|OtherTeams], AnswerList, List, FinalList) :- 
     consumeList(AnswerModel, AnswerList, 0, 0, OtherTeams, List, FinalList).
-compareAnswer(_, _, _, Z, FinalList) :- FinalList = Z.
+compareAnswer(_, _, Z, FinalList) :- FinalList = Z.
 
 % return the index from the answer team in "teams" list
-getIndexFromAnswerTeam(FinalList, N, HighCoincidence, Index) :- 
+getIndexFromAnswerTeam(FinalList, N, HighCoincidence, HighIndex, Index) :- 
     nth0(N, FinalList, Coincidence),
     Next is N + 1,
-    (Coincidence > HighCoincidence -> getIndexFromAnswerTeam(FinalList, Next, N, Index); getIndexFromAnswerTeam(FinalList, Next, HighCoincidence, Index)).
-getIndexFromAnswerTeam(_, 8, HighCoincidence, Index) :- Index = HighCoincidence.
+    (Coincidence > HighCoincidence -> getIndexFromAnswerTeam(FinalList, Next, Coincidence, N, Index); getIndexFromAnswerTeam(FinalList, Next, HighCoincidence, HighIndex, Index)).
+getIndexFromAnswerTeam(_, 8, _, HighIndex, Index) :- Index = HighIndex.
 
 % return only the name of the team from the index of the answer
 getTeam(Teams, Index, Team) :- 
@@ -77,8 +77,8 @@ getTeam(Teams, Index, Team) :-
 % final answer
 answer(AnswerList, Answer) :-
     teams(Teams),
-    compareAnswer(Teams, AnswerList, 0, [], FinalList),
-    getIndexFromAnswerTeam(FinalList, 0, 0, Index),
+    compareAnswer(Teams, AnswerList, [], FinalList),
+    getIndexFromAnswerTeam(FinalList, 0, 0, 0, Index),
     getTeam(Teams, Index, Team),
     string_concat('Você é torcedor do time do ', Team, Temp1),
     string_concat(Temp1, '!', Answer).
