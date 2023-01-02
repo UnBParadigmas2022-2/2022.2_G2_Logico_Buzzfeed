@@ -20,7 +20,7 @@ menu_option(_):- write('Não é uma opção válida\n\n'), nl, menu.
 % start the quiz and compute the final answer
 start_quiz :-
     ask_questions(1, [], NewList),
-    answer(X, Y, Z, Answer),
+    answer(NewList, Answer),
     write(Answer), nl, exit.
 
 ask_questions(N, Answers, NewList) :-
@@ -34,20 +34,48 @@ ask_questions(N, Answers, NewList) :-
     ask_questions(Next, Z, NewList).
 ask_questions(_, _, _).
 
-answers_list(3, NewList, Z) :- NewList = Z.
+answers_list(5, NewList, Z) :- NewList = Z.
 answers_list(_, _, _).
 
 % list of possible combinations and the related team
 teams([
-    (3, 2, 3, 'São Paulo!'),
-    (3, 1, 3, 'Flamengo!')
+    [[3, 2, 3, 2, 3], 'São Paulo!'],
+    [[3, 2, 3, 3, 3], 'São Paulo!'],
+    [[3, 2, 3, 2, 2], 'São Paulo!'],
+    [[3, 2, 3, 3, 2], 'São Paulo!'],
+    [[3, 1, 3, 1, 1], 'Flamengo!'],
+    [[3, 1, 3, 2, 1], 'Flamengo!'],
+    [[3, 1, 2, 1, 1], 'Vasco!'],
+    [[3, 1, 2, 1, 1], 'Vasco!']
 ]).
 
+percorreLista(AnswerModel, AnswerList, Coincidence, N, OtherTeams, ListF, FinalList) :- 
+    nth0(N, AnswerModel, Elem),
+    nth0(N, AnswerList, Elem2),
+    (Elem =:= Elem2 ->  Coincidences is Coincidence + 1; Coincidences is Coincidence),
+    Next is N + 1,
+    percorreLista(AnswerModel, AnswerList, Coincidences, Next, OtherTeams, ListF, FinalList).
+percorreLista(_, AnswerList, Coincidences, 5, OtherTeams, ListF, FinalList) :-  insert_answer(ListF, Coincidences, Z), compareAnswer(OtherTeams, AnswerList, 0, Z, FinalList).
+
+compareAnswer([[AnswerModel|[Team|[]]]|OtherTeams], AnswerList, N, List, FinalList) :- 
+    percorreLista(AnswerModel, AnswerList, 0, 0, OtherTeams, List, FinalList).
+compareAnswer(_, _, _, Z, FinalList) :- FinalList = Z.
+
+getIndexFromAnswerTeam(FinalList, N, HighCoincidence, Index) :- 
+    nth0(N, FinalList, Coincidence),
+    Next is N + 1,
+    (Coincidence > HighCoincidence -> getIndexFromAnswerTeam(FinalList, Next, N, Index); getIndexFromAnswerTeam(FinalList, Next, HighCoincidence, Index)).
+getIndexFromAnswerTeam(_, 8, HighCoincidence, Index) :- Index = HighCoincidence.
+
+getTeam(Teams, Index, Team) :- 
+    nth0(Index, Teams, [_|[Team|[]]]).
+
 % final answer
-answer(X, Y, Z, Answer) :-
+answer(AnswerList, Answer) :-
     teams(Teams),
-    member((X, Y, Z, Team), Teams),
-    !, % cut to stop searching for more solutions
+    compareAnswer(Teams, AnswerList, 0, [], FinalList),
+    getIndexFromAnswerTeam(FinalList, 0, 0, Index),
+    getTeam(Teams, Index, Team),
     string_concat('Você é torcedor do time do ', Team, Temp1),
     string_concat(Temp1, '!', Answer).
 answer(_, _, _, 'Desculpe, mas não encontramos um time de futebol para você.').
