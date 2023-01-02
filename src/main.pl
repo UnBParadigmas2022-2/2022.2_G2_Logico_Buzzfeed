@@ -49,24 +49,28 @@ teams([
     [[3, 1, 2, 1, 1], 'Vasco!']
 ]).
 
-percorreLista(AnswerModel, AnswerList, Coincidence, N, OtherTeams, ListF, FinalList) :- 
+% method to compare list of answers from user and list of model answers from the teams
+consumeList(AnswerModel, AnswerList, Coincidence, N, OtherTeams, ListF, FinalList) :- 
     nth0(N, AnswerModel, Elem),
     nth0(N, AnswerList, Elem2),
     (Elem =:= Elem2 ->  Coincidences is Coincidence + 1; Coincidences is Coincidence),
     Next is N + 1,
-    percorreLista(AnswerModel, AnswerList, Coincidences, Next, OtherTeams, ListF, FinalList).
-percorreLista(_, AnswerList, Coincidences, 5, OtherTeams, ListF, FinalList) :-  insert_answer(ListF, Coincidences, Z), compareAnswer(OtherTeams, AnswerList, 0, Z, FinalList).
+    consumeList(AnswerModel, AnswerList, Coincidences, Next, OtherTeams, ListF, FinalList).
+consumeList(_, AnswerList, Coincidences, 5, OtherTeams, ListF, FinalList) :-  insert_answer(ListF, Coincidences, Z), compareAnswer(OtherTeams, AnswerList, 0, Z, FinalList).
 
+% method that return each model of "teams" on KB
 compareAnswer([[AnswerModel|[Team|[]]]|OtherTeams], AnswerList, N, List, FinalList) :- 
-    percorreLista(AnswerModel, AnswerList, 0, 0, OtherTeams, List, FinalList).
+    consumeList(AnswerModel, AnswerList, 0, 0, OtherTeams, List, FinalList).
 compareAnswer(_, _, _, Z, FinalList) :- FinalList = Z.
 
+% return the index from the answer team in "teams" list
 getIndexFromAnswerTeam(FinalList, N, HighCoincidence, Index) :- 
     nth0(N, FinalList, Coincidence),
     Next is N + 1,
     (Coincidence > HighCoincidence -> getIndexFromAnswerTeam(FinalList, Next, N, Index); getIndexFromAnswerTeam(FinalList, Next, HighCoincidence, Index)).
 getIndexFromAnswerTeam(_, 8, HighCoincidence, Index) :- Index = HighCoincidence.
 
+% return only the name of the team from the index of the answer
 getTeam(Teams, Index, Team) :- 
     nth0(Index, Teams, [_|[Team|[]]]).
 
