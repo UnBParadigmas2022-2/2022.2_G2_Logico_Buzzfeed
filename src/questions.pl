@@ -1,5 +1,25 @@
-question(1, 'Qual sua região preferida do Brasil?', ['Norte', 'Nordeste', 'Sudeste', 'Sul']).
-question(2, 'Qual sua cidade preferida no Brasil?', ['Rio de Janeiro', 'São Paulo', 'Belo Horizonte', 'Porto Alegre']).
-question(3, 'Qual sua cor preferida?', ['Verde', 'Branco', 'Vermelho', 'Azul']).
-question(4, 'O que mais te encanta ?', ['Posse de Bola', 'Finalizações',  'Contra-ataque', 'Defesa Sólida']).
-question(5, 'Se você pudesse, com que frequência iria ao estádio ?', ['Todos os finais de semana, não importa o jogo', 'Se não tivesse outro programa eu iria', 'Apenas em decisões', 'Não frequentaria muito os estádios']).
+read_questions :-
+    open('questions.txt', read, Str),
+    read_file(Str,Lines),
+    close(Str),
+    traverse(Lines, 1).
+
+read_file(Stream, []) :-
+    at_end_of_stream(Stream).
+
+read_file(Stream, [X|L]) :-
+    \+ at_end_of_stream(Stream),
+    read(Stream, X),
+    read_file(Stream, L).
+
+traverse([Head|Tail], Num) :-
+    nth0(0, Head, Question),
+    nth0(1, Head, Options),
+    assert_question(Num, Question, Options),
+    NewNum is Num + 1,
+    traverse(Tail, NewNum).
+traverse([end_of_file], _).
+traverse([], _).
+
+assert_question(Num, Question, Options) :-
+    assert(question(Num, Question, Options)).
