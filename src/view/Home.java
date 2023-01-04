@@ -37,7 +37,15 @@ public class Home extends JFrame {
 		contentPane.add(tituloBuzzfeed);
 		
 		JLabel botaoStart = new JLabel("");
-		
+		botaoStart.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Pergunta pergunta = new Pergunta();
+				dispose();
+				pergunta.setVisible(true);
+				pergunta.setLocationRelativeTo(null);
+			}
+		});
 		botaoStart.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		botaoStart.setHorizontalAlignment(SwingConstants.CENTER);
 		botaoStart.setIcon(new ImageIcon(Home.class.getResource("/icons/rightArrow.png")));
