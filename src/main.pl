@@ -19,6 +19,7 @@ menu_option(_):- write('Não é uma opção válida\n\n'), nl, menu.
 
 % start the quiz and compute the final answer
 start_quiz :-
+    read_questions,
     ask_questions(1, [], NewList),
     answer(NewList, Answer),
     write(Answer), nl, exit.
@@ -50,7 +51,7 @@ teams([
 ]).
 
 % method to compare list of answers from user and list of model answers from the teams
-consumeList(AnswerModel, AnswerList, Coincidence, N, OtherTeams, ListF, FinalList) :- 
+consumeList(AnswerModel, AnswerList, Coincidence, N, OtherTeams, ListF, FinalList) :-
     nth0(N, AnswerModel, Elem),
     nth0(N, AnswerList, Elem2),
     (Elem =:= Elem2 ->  Coincidences is Coincidence + 1; Coincidences is Coincidence),
@@ -59,19 +60,19 @@ consumeList(AnswerModel, AnswerList, Coincidence, N, OtherTeams, ListF, FinalLis
 consumeList(_, AnswerList, Coincidences, 5, OtherTeams, ListF, FinalList) :-  insert_answer(ListF, Coincidences, Z), compareAnswer(OtherTeams, AnswerList, Z, FinalList).
 
 % method that return each model of "teams" on KB
-compareAnswer([[AnswerModel|_]|OtherTeams], AnswerList, List, FinalList) :- 
+compareAnswer([[AnswerModel|_]|OtherTeams], AnswerList, List, FinalList) :-
     consumeList(AnswerModel, AnswerList, 0, 0, OtherTeams, List, FinalList).
 compareAnswer(_, _, Z, FinalList) :- FinalList = Z.
 
 % return the index from the answer team in "teams" list
-getIndexFromAnswerTeam(FinalList, N, HighCoincidence, HighIndex, Index) :- 
+getIndexFromAnswerTeam(FinalList, N, HighCoincidence, HighIndex, Index) :-
     nth0(N, FinalList, Coincidence),
     Next is N + 1,
     (Coincidence > HighCoincidence -> getIndexFromAnswerTeam(FinalList, Next, Coincidence, N, Index); getIndexFromAnswerTeam(FinalList, Next, HighCoincidence, HighIndex, Index)).
 getIndexFromAnswerTeam(_, 8, _, HighIndex, Index) :- Index = HighIndex.
 
 % return only the name of the team from the index of the answer
-getTeam(Teams, Index, Team) :- 
+getTeam(Teams, Index, Team) :-
     nth0(Index, Teams, [_|[Team|[]]]).
 
 % final answer
