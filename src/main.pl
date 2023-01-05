@@ -1,16 +1,11 @@
 % load the quiz questions from a file
 :- consult('questions.pl').
 
+% load the quiz menu from a file
+:- consult('menu.pl').
+
 % start the program
 :- initialization(menu).
-
-% BuzzFeed Menu
-menu :-
-    write('Bem-vindo ao Quiz! Escolha uma das opções abaixo:'), nl,
-    write('1 - Iniciar o quiz'), nl,
-    write('2 - Sair do programa'), nl,
-    read(Choice),
-    menu_option(Choice).
 
 % handle the menu options
 menu_option(1) :- start_quiz.
