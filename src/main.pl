@@ -175,12 +175,9 @@ add_teams :-
     read(Fans),
     list_append([Region, Region, Color, Quality, Fans], [Team], NewT),
     teams(TeamsList),
-    % write(TeamsList), nl,
     append_list(TeamsList, [NewT], NewTeamList), 
-    % write(NewTeamList), nl,
     write_file(NewTeamList).
-    % write(He), nl,
-    % laco(Team,TeamsList).
+
 
 write_file(NewList) :-  
     open("teams.txt", write, File),
