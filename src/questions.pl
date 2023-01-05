@@ -24,7 +24,6 @@ traverse([Head|Tail], Num) :-
 traverse([end_of_file], _).
 traverse([], _).
 
-% The g2_buzzfeed_api hostname is the docker container name
 read_questions_from_api :-
     getenv('QUESTIONS_API_URL', ApiUrl),
     http_open(ApiUrl, In, [request_header('Accept'='application/json')]),
