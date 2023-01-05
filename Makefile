@@ -6,4 +6,4 @@ default: run
 .PHONY: run
 run:
 	@ echo "--- Iniciando o jogo ---"
-	$(PROLOG) -s src/main 
+	QUESTIONS_API_URL=http://localhost:5000/questions $(PROLOG) -s src/main

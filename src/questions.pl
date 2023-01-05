@@ -26,7 +26,8 @@ traverse([], _).
 
 % The g2_buzzfeed_api hostname is the docker container name
 read_questions_from_api :-
-    http_open('http://g2_buzzfeed_api:5000/questions', In, [request_header('Accept'='application/json')]),
+    getenv('QUESTIONS_API_URL', ApiUrl),
+    http_open(ApiUrl, In, [request_header('Accept'='application/json')]),
     json_read_dict(In, Dict),
     close(In),
     read_api_questions(Dict.get(questions)).
