@@ -6,7 +6,7 @@ default: run
 .PHONY: run
 run:
 	@ echo "--- Iniciando o jogo ---"
-	QUESTIONS_API_URL=http://localhost:5000/questions $(PROLOG) -s src/main
+	@ QUESTIONS_API_URL=http://localhost:5000/questions $(PROLOG) -s src/main
 
 .PHONY: start_all
 start_all:
@@ -24,10 +24,10 @@ stop_all:
 stop_api:
 	bash ./scripts/stop_api.sh
 
-.PHONY: remove_all 
+.PHONY: remove_all
 remove_all:
 	bash ./scripts/remove_all.sh
 
-.PHONY: remove_api 
+.PHONY: remove_api
 remove_api:
 	bash ./scripts/remove_api.sh
