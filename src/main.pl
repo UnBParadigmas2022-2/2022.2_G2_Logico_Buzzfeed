@@ -13,31 +13,6 @@ menu_option(2) :- add_teams.
 menu_option(3) :- exit.
 menu_option(_):- write('Não é uma opção válida\n\n'), nl, menu.
 
-% adding teams to the database
-add_teams :-
-    read_questions,
-    write('Qual time deseja adicionar?'), nl,
-    read(Team),
-    write('De qual região esse time pertence?'), nl,
-    question(1, Text, Choices),
-    write_choices(Choices, 1),
-    read(Region),
-    write('Qual cor principal desse time?'), nl,
-    question(2, Text, Choices),
-    write_choices(Choices, 1),
-    read(Color),
-    write(Team, Region, Color),
-    teams(Times),
-    [Cab|_] = Times,
-    pertence(Team, Cab).
-
-pertence(Team, [_|Cau]) :-
-    [Cauda|_] = Cau,
-    write(Cauda), nl,
-    write(Team), nl,
-    Cauda \= Team.
-   
-
 % start the quiz and compute the final answer
 start_quiz :-
     read_questions,
@@ -120,5 +95,49 @@ append_list([X1|L1],L2,[X1|L3]) :- append_list(L1,L2,L3).
 
 insert_answer(L, X, NewL) :- append_list(L, [X], NewL).
 
+% adding teams
+add_teams :-
+    read_questions,
+    write('Qual time deseja adicionar?'), nl,
+    read(Team),
+    allChoices(AllChoices),
+    write('De qual região esse time pertence?'), nl,
+    [Choices1|_] = AllChoices,
+    write_choices(Choices1, 1),
+    read(Region),
+    write('Qual cor principal desse time?'), nl,
+    [_,Choice2,_] = AllChoices,
+    write_choices(Choice2, 1),
+    read(Color),
+    write('Qual a caracteristica do time?'), nl,
+    [_,_,Choice3] = AllChoices,
+    write_choices(Choice3, 1),
+    read(Quality),
+    teams(TeamsList),
+    [He|_] = TeamsList,
+    list_append([Region, Region, Color, Quality], [Team], NewT),
+    % write(NewT), nl,
+    % write(TeamsList),nl,
+    % list_append([NewT], TeamsList, TeamsList), 
+    check(Team, He).
+
+% checking if the team is already present in the list of teams
+check(Team, [_|Tail]) :-
+    [Tail|_] = TailName,
+    TailName \= Team. 
+
+% choices for the questions in add_teams
+allChoices([['Norte', 'Nordeste', 'Sudeste', 'Sul'], 
+              ['Verde', 'Branco', 'Vermelho', 'Azul'], 
+              ['Posse de Bola', 'Finalizações', 'Contra-ataque', 'Defesa Sólida']
+]).
+
+% appending the name of the team with the choices
+list_member(X,[X|_]).
+list_member(X,[_|TAIL]) :- list_member(X,TAIL).
+
+list_append(A,T,T) :- list_member(A,T),!.
+list_append(A,T,[A|T]).
+   
 % exit the program
 exit :- halt.
