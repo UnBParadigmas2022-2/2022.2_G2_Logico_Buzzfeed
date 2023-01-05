@@ -1,2 +1,5 @@
 Developerfile
 docker-compose.yml
+/bin/
+.classpath
+.project
