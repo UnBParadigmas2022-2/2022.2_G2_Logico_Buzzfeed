@@ -1,24 +1,4 @@
-% load the quiz questions from a file
-:- consult('questions.pl').
-
-% load the quiz menu from a file
-:- consult('menu.pl').
-
-% start the program
-:- initialization(menu).
-
-% handle the menu options
-menu_option(1) :- start_quiz.
-menu_option(2) :- exit.
-menu_option(_):- write('Não é uma opção válida\n\n'), nl, menu.
-
-% start the quiz and compute the final answer
-start_quiz :-
-    read_questions,
-    ask_questions(1, [], NewList),
-    answer(NewList, Answer),
-    write(Answer), nl, exit.
-
+% questions reading
 read_questions :-
     write('Deseja carregar as questões de um arquivo ou de uma API?'), nl,
     write('1 - Arquivo'), nl,
@@ -30,19 +10,11 @@ questions_menu_option(1) :- read_questions_from_file.
 questions_menu_option(2) :- read_questions_from_api.
 questions_menu_option(_):- write('Não é uma opção válida\n\n'), nl, read_questions.
 
-ask_questions(N, Answers, NewList) :-
-    question(N, Text, Choices),
-    write(Text), nl,
-    write_choices(Choices, 1),
-    read(Response),
-    insert_answer(Answers, Response, Z),
-    answers_list(N, NewList, Z),
-    Next is N + 1,
-    ask_questions(Next, Z, NewList).
-ask_questions(_, _, _).
+% manipulate list
+append_list([],L,L).
+append_list([X1|L1],L2,[X1|L3]) :- append_list(L1,L2,L3).
 
-answers_list(5, NewList, Z) :- NewList = Z.
-answers_list(_, _, _).
+insert_answer(L, X, NewL) :- append_list(L, [X], NewL).
 
 % list of possible combinations and the related team
 teams([
@@ -134,20 +106,3 @@ answer(AnswerList, Answer) :-
     string_concat('Você é torcedor do time: ', Team, Temp1),
     string_concat(Temp1, '!', Answer).
 answer(_, _, _, 'Desculpe, mas não encontramos um time de futebol para você.').
-
-% write the choices for a question
-write_choices([H|T], N) :-
-    write(N), write('. '), write(H), nl,
-    Next is N + 1,
-    write_choices(T, Next).
-write_choices([], _) :- nl.
-
-% manipulate list
-
-append_list([],L,L).
-append_list([X1|L1],L2,[X1|L3]) :- append_list(L1,L2,L3).
-
-insert_answer(L, X, NewL) :- append_list(L, [X], NewL).
-
-% exit the program
-exit :- halt.
