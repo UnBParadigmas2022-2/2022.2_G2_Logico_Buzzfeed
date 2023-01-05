@@ -36,15 +36,16 @@ answers_list(_, _, _).
 
 % list of possible combinations and the related team
 teams([
-    [[3, 1, 3, 2, 1], 'flamengo'],
     [[3, 2, 3, 2, 3], 'são Paulo'],
-    % [[3, 2, 3, 3, 3], 'são Paulo'],
-    % [[3, 2, 3, 2, 2], 'são Paulo'],
-    % [[3, 2, 3, 3, 2], 'são Paulo'],
-    % [[3, 1, 3, 1, 1], 'flamengo'],
-    % [[3, 1, 2, 1, 1], 'vasco'],
+    [[3, 2, 3, 3, 3], 'são Paulo'],
+    [[3, 2, 3, 2, 2], 'são Paulo'],
+    [[3, 2, 3, 3, 2], 'são Paulo'],
+    [[3, 1, 3, 2, 1], 'flamengo'],
+    [[3, 1, 3, 1, 1], 'flamengo'],
+    [[3, 1, 2, 1, 1], 'vasco'],
     [[3, 1, 2, 1, 1], 'vasco']
 ]).
+
 
 % method to compare list of answers from user and list of model answers from the teams
 consumeList(AnswerModel, AnswerList, Coincidence, N, OtherTeams, ListF, FinalList) :-
@@ -106,30 +107,41 @@ add_teams :-
     write_choices(Choices1, 1),
     read(Region),
     write('Qual cor principal desse time?'), nl,
-    [_,Choice2,_] = AllChoices,
+    [_,Choice2,_,_] = AllChoices,
     write_choices(Choice2, 1),
     read(Color),
     write('Qual a caracteristica do time?'), nl,
-    [_,_,Choice3] = AllChoices,
+    [_,_,Choice3,_] = AllChoices,
     write_choices(Choice3, 1),
     read(Quality),
+    write('Como é a torcida desse time?'), nl,
+    [_,_,_,Choice4] = AllChoices,
+    write_choices(Choice4, 1),
+    read(Fans),
+    list_append([Region, Region, Color, Quality, Fans], [Team], NewT),
     teams(TeamsList),
-    [He|_] = TeamsList,
-    list_append([Region, Region, Color, Quality], [Team], NewT),
-    % write(NewT), nl,
-    % write(TeamsList),nl,
-    % list_append([NewT], TeamsList, TeamsList), 
-    check(Team, He).
+    % write(TeamsList), nl,
+    append_list(TeamsList, [NewT], NewTeamList), 
+    % write(NewTeamList), nl,
+    write_file(NewTeamList).
+    % write(He), nl,
+    % laco(Team,TeamsList).
 
-% checking if the team is already present in the list of teams
-check(Team, [_|Tail]) :-
-    [Tail|_] = TailName,
-    TailName \= Team. 
+write_file(NewList) :-  
+    open("teams.txt", write, File),
+    [Head|Tail] = NewList,
+    write(File, Head),
+    loop_print(File, Tail),
+    close(File).
+
+loop_print(File,[H1|T1]) :- T1 = [], write(File, ', '), write(File, H1).
+loop_print(File,[H1|T1]) :- write(File, ', '), write(File, H1), loop_print(File, T1).
 
 % choices for the questions in add_teams
 allChoices([['Norte', 'Nordeste', 'Sudeste', 'Sul'], 
               ['Verde', 'Branco', 'Vermelho', 'Azul'], 
-              ['Posse de Bola', 'Finalizações', 'Contra-ataque', 'Defesa Sólida']
+              ['Posse de Bola', 'Finalizações', 'Contra-ataque', 'Defesa Sólida'],
+              ['Fanaticos', 'Gostam de acompanhar', 'Torcida modinha', 'Estadios vazios']
 ]).
 
 % appending the name of the team with the choices
