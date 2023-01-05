@@ -13,9 +13,9 @@ class Questions(Resource):
                 },
                 {
                     "num": 2,
-                    "question": "Qual sua cidade preferida no Brasil?",
+                    "question": "Qual o seu Estado preferido do Brasil?",
                     "options": [
-                        "Rio de Janeiro", "São Paulo", "Belo Horizonte", "Porto Alegre"
+                        "Rio de Janeiro", "São Paulo", "Ceará", "Rio Grande do Sul"
                     ]
                 },
                 {
