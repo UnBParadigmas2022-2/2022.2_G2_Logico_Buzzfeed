@@ -2,7 +2,7 @@
 :- use_module(library(http/json)).
 
 read_questions_from_file :-
-    open('questions.txt', read, Str),
+    open('src/questions.txt', read, Str),
     read_file(Str,Lines),
     close(Str),
     traverse(Lines, 1).
