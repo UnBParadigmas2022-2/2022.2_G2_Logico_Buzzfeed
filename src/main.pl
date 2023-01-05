@@ -40,6 +40,31 @@ answers_list(_, _, _).
 
 % list of possible combinations and the related team
 teams([
+    [[_, _, _, _, _], '<Inexistente na base de dados>'],
+    [[1, _, 2, _, 1], 'Rio Branco F.C.'],
+    [[1, _, 3, _, 1], 'Rio Branco F.C.'],
+    [[1, _, 2, _, 4], 'Náutico F.C.'],
+    [[1, _, 3, _, 4], 'Náutico F.C.'],
+    [[1, _, 4, 1, _], 'São Raimundo E.C.'],
+    [[1, _, 4, 2, _], 'Nacional F.C.'],
+    [[1, _, _, 3, 1], 'Amazonas F.C.'],
+    [[1, _, 1, 4, 4], 'Náuas E.C.'],
+    [[1, _, 1, 2, 3], 'Tapajós F.C.'],
+
+    [[2, _, 2, 2, 1], 'Bahia'],
+    [[2, _, 3, 2, 1], 'Bahia'],
+    [[2, _, 4, 1, 2], 'Sport'],
+    [[2, _, 2, 1, 2], 'Sport'],
+    [[2, _, 4, 1, 1], 'Fortaleza'],
+    [[2, _, 3, 1, 1], 'Vitória'],
+    [[2, _, 3, 2, 4], 'Campinense'],
+
+    [[4, _, 4, 1, 1], 'Grêmio'],
+    [[4, _, 3, 1, 1], 'Internacional'],
+    [[4, _, 1, 2, 2], 'Coritiba'],
+    [[4, _, 2, 3, 2], 'Londrina'],
+    [[4, _, _, 3, 4], 'Criciúma'],
+
     [[3, 2, 3, 2, 3], 'São Paulo!'],
     [[3, 2, 3, 3, 3], 'São Paulo!'],
     [[3, 2, 3, 2, 2], 'São Paulo!'],
@@ -54,7 +79,7 @@ teams([
 consumeList(AnswerModel, AnswerList, Coincidence, N, OtherTeams, ListF, FinalList) :-
     nth0(N, AnswerModel, Elem),
     nth0(N, AnswerList, Elem2),
-    (Elem =:= Elem2 ->  Coincidences is Coincidence + 1; Coincidences is Coincidence),
+    (Elem == Elem2 ->  Coincidences is Coincidence + 1; Coincidences is Coincidence),
     Next is N + 1,
     consumeList(AnswerModel, AnswerList, Coincidences, Next, OtherTeams, ListF, FinalList).
 consumeList(_, AnswerList, Coincidences, 5, OtherTeams, ListF, FinalList) :-  insert_answer(ListF, Coincidences, Z), compareAnswer(OtherTeams, AnswerList, Z, FinalList).
@@ -81,7 +106,7 @@ answer(AnswerList, Answer) :-
     compareAnswer(Teams, AnswerList, [], FinalList),
     getIndexFromAnswerTeam(FinalList, 0, 0, 0, Index),
     getTeam(Teams, Index, Team),
-    string_concat('Você é torcedor do time do ', Team, Temp1),
+    string_concat('Você é torcedor do time: ', Team, Temp1),
     string_concat(Temp1, '!', Answer).
 answer(_, _, _, 'Desculpe, mas não encontramos um time de futebol para você.').
 
