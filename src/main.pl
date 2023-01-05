@@ -19,6 +19,17 @@ start_quiz :-
     answer(NewList, Answer),
     write(Answer), nl, exit.
 
+read_questions :-
+    write('Deseja carregar as questões de um arquivo ou de uma API?'), nl,
+    write('1 - Arquivo'), nl,
+    write('2 - API'), nl,
+    read(Choice),
+    questions_menu_option(Choice).
+
+questions_menu_option(1) :- read_questions_from_file.
+questions_menu_option(2) :- read_questions_from_api.
+questions_menu_option(_):- write('Não é uma opção válida\n\n'), nl, read_questions.
+
 ask_questions(N, Answers, NewList) :-
     question(N, Text, Choices),
     write(Text), nl,

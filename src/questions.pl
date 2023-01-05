@@ -1,4 +1,7 @@
-read_questions :-
+:- use_module(library(http/http_open)).
+:- use_module(library(http/json)).
+
+read_questions_from_file :-
     open('questions.txt', read, Str),
     read_file(Str,Lines),
     close(Str),
@@ -20,6 +23,19 @@ traverse([Head|Tail], Num) :-
     traverse(Tail, NewNum).
 traverse([end_of_file], _).
 traverse([], _).
+
+read_questions_from_api :-
+    getenv('QUESTIONS_API_URL', ApiUrl),
+    http_open(ApiUrl, In, [request_header('Accept'='application/json')]),
+    json_read_dict(In, Dict),
+    close(In),
+    read_api_questions(Dict.get(questions)).
+
+read_api_questions([Head|Tail]) :-
+    assert_question(Head.get(num), Head.get(question), Head.get(options)),
+    read_api_questions(Tail).
+read_api_questions([Head]) :-
+    assert_question(Head.get(num), Head.get(question), Head.get(options)).
 
 assert_question(Num, Question, Options) :-
     assert(question(Num, Question, Options)).
