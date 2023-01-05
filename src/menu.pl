@@ -12,7 +12,8 @@ menu :-
     '), nl,
     write('Bem-vindo ao Quiz! Escolha uma das opções abaixo:'), nl,
     write('1 - Iniciar o quiz'), nl,
-    write('2 - Sair do programa'), nl,
+    write('2 - Adicionar novo time'), nl,
+    write('3 - Sair do programa'), nl,
     read(Choice),
     menu_option(Choice).
 

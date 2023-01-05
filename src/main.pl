@@ -9,8 +9,34 @@
 
 % handle the menu options
 menu_option(1) :- start_quiz.
-menu_option(2) :- exit.
+menu_option(2) :- add_teams.
+menu_option(3) :- exit.
 menu_option(_):- write('Não é uma opção válida\n\n'), nl, menu.
+
+% adding teams to the database
+add_teams :-
+    read_questions,
+    write('Qual time deseja adicionar?'), nl,
+    read(Team),
+    write('De qual região esse time pertence?'), nl,
+    question(1, Text, Choices),
+    write_choices(Choices, 1),
+    read(Region),
+    write('Qual cor principal desse time?'), nl,
+    question(2, Text, Choices),
+    write_choices(Choices, 1),
+    read(Color),
+    write(Team, Region, Color),
+    teams(Times),
+    [Cab|_] = Times,
+    pertence(Team, Cab).
+
+pertence(Team, [_|Cau]) :-
+    [Cauda|_] = Cau,
+    write(Cauda), nl,
+    write(Team), nl,
+    Cauda \= Team.
+   
 
 % start the quiz and compute the final answer
 start_quiz :-
@@ -35,14 +61,14 @@ answers_list(_, _, _).
 
 % list of possible combinations and the related team
 teams([
-    [[3, 2, 3, 2, 3], 'São Paulo!'],
-    [[3, 2, 3, 3, 3], 'São Paulo!'],
-    [[3, 2, 3, 2, 2], 'São Paulo!'],
-    [[3, 2, 3, 3, 2], 'São Paulo!'],
-    [[3, 1, 3, 1, 1], 'Flamengo!'],
-    [[3, 1, 3, 2, 1], 'Flamengo!'],
-    [[3, 1, 2, 1, 1], 'Vasco!'],
-    [[3, 1, 2, 1, 1], 'Vasco!']
+    [[3, 1, 3, 2, 1], 'flamengo'],
+    [[3, 2, 3, 2, 3], 'são Paulo'],
+    % [[3, 2, 3, 3, 3], 'são Paulo'],
+    % [[3, 2, 3, 2, 2], 'são Paulo'],
+    % [[3, 2, 3, 3, 2], 'são Paulo'],
+    % [[3, 1, 3, 1, 1], 'flamengo'],
+    % [[3, 1, 2, 1, 1], 'vasco'],
+    [[3, 1, 2, 1, 1], 'vasco']
 ]).
 
 % method to compare list of answers from user and list of model answers from the teams
