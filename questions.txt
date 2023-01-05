@@ -1,6 +1,0 @@
-['Qual sua região preferida do Brasil?', ['Norte', 'Nordeste', 'Sudeste', 'Sul']].
-['Qual o seu Estado preferido no Brasil?', ['Rio de Janeiro', 'São Paulo',
-'Ceará', 'Rio Grande do Sul']].
-['Qual sua cor preferida?', ['Verde', 'Branco', 'Vermelho', 'Azul']].
-['O que mais te encanta?', ['Posse de Bola', 'Finalizações', 'Contra-ataque', 'Defesa Sólida']].
-['Se você pudesse, com que frequência iria ao estádio?', ['Todos os finais de semana, não importa o jogo', 'Se não tivesse outro programa eu iria', 'Apenas em decisões', 'Não frequentaria muito os estádios']].
