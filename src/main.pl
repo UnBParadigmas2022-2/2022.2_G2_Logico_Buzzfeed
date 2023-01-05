@@ -46,14 +46,35 @@ answers_list(_, _, _).
 
 % list of possible combinations and the related team
 teams([
-    [[3, 2, 3, 2, 3], 'São Paulo!'],
-    [[3, 2, 3, 3, 3], 'São Paulo!'],
-    [[3, 2, 3, 2, 2], 'São Paulo!'],
-    [[3, 2, 3, 3, 2], 'São Paulo!'],
-    [[3, 1, 3, 1, 1], 'Flamengo!'],
-    [[3, 1, 3, 2, 1], 'Flamengo!'],
-    [[3, 1, 2, 1, 1], 'Vasco!'],
-    [[3, 1, 2, 1, 1], 'Vasco!']
+    % Sudeste (Rio de Janeiro)
+    [[3, 1, 3, 1, 1], 'Flamengo'],
+    [[3, 1, 3, 2, 1], 'Flamengo'],
+    [[3, 1, 3, 1, 2], 'Flamengo'],
+    [[3, 1, 3, 2, 2], 'Flamengo'],
+    [[3, 1, 2, 1, 1], 'Vasco'],
+    [[3, 1, 2, 1, 1], 'Vasco'],
+
+    % Sudeste (São Paulo)
+    [[3, 2, 3, 2, 3], 'São Paulo'],
+    [[3, 2, 3, 3, 3], 'São Paulo'],
+    [[3, 2, 3, 2, 2], 'São Paulo'],
+    [[3, 2, 3, 3, 2], 'São Paulo'],
+    [[3, 2, 2, 3, 1], 'Corinthians'],
+    [[3, 2, 2, 4, 1], 'Corinthians'],
+    [[3, 2, 2, 3, 2], 'Corinthians'],
+    [[3, 2, 2, 4, 2], 'Corinthians'],
+
+    % Nordeste
+    [[2, 3, 3, 2, 1], 'Fortaleza'],
+    [[2, 3, 4, 4, 2], 'Fortaleza'],
+    [[2, 3, 1, 3, 1], 'Ceará'],
+    [[2, 3, 1, 3, 2], 'Ceará'],
+
+    % Sul
+    [[4, 4, 4, 2, 4], 'Grêmio'],
+    [[4, 4, 4, 4, 3], 'Grêmio'],
+    [[4, 4, 3, 1, 2], 'Inter'],
+    [[4, 4, 3, 2, 3], 'Inter']
 ]).
 
 % method to compare list of answers from user and list of model answers from the teams
@@ -75,7 +96,7 @@ getIndexFromAnswerTeam(FinalList, N, HighCoincidence, HighIndex, Index) :-
     nth0(N, FinalList, Coincidence),
     Next is N + 1,
     (Coincidence > HighCoincidence -> getIndexFromAnswerTeam(FinalList, Next, Coincidence, N, Index); getIndexFromAnswerTeam(FinalList, Next, HighCoincidence, HighIndex, Index)).
-getIndexFromAnswerTeam(_, 8, _, HighIndex, Index) :- Index = HighIndex.
+getIndexFromAnswerTeam(_, 22, _, HighIndex, Index) :- Index = HighIndex.
 
 % return only the name of the team from the index of the answer
 getTeam(Teams, Index, Team) :-
