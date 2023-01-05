@@ -36,10 +36,10 @@ answers_list(_, _, _).
 
 % list of possible combinations and the related team
 teams([
-    [[3, 2, 3, 2, 3], 'são Paulo'],
-    [[3, 2, 3, 3, 3], 'são Paulo'],
-    [[3, 2, 3, 2, 2], 'são Paulo'],
-    [[3, 2, 3, 3, 2], 'são Paulo'],
+    [[3, 2, 3, 2, 3], 'saoPaulo'],
+    [[3, 2, 3, 3, 3], 'saoPaulo'],
+    [[3, 2, 3, 2, 2], 'saoPaulo'],
+    [[3, 2, 3, 3, 2], 'saoPaulo'],
     [[3, 1, 3, 2, 1], 'flamengo'],
     [[3, 1, 3, 1, 1], 'flamengo'],
     [[3, 1, 2, 1, 1], 'vasco'],
@@ -134,7 +134,7 @@ write_file(NewList) :-
     loop_print(File, Tail),
     close(File).
 
-loop_print(File,[H1|T1]) :- T1 = [], write(File, ', '), write(File, H1).
+loop_print(File,[H1|T1]) :- T1 = [], write(File, ', '), write(File, H1), write(File, '.').
 loop_print(File,[H1|T1]) :- write(File, ', '), write(File, H1), loop_print(File, T1).
 
 % choices for the questions in add_teams
