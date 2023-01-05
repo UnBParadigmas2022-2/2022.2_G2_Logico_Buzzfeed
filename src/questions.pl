@@ -1,5 +1,5 @@
 read_questions :-
-    open('questions.txt', read, Str),
+    open('../questions.txt', read, Str),
     read_file(Str,Lines),
     close(Str),
     traverse(Lines, 1).
