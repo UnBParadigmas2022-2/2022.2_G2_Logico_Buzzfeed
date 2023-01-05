@@ -1,7 +1,7 @@
 :- use_module(library(pce)).
 :- consult('utils.pl').
 
-start :-
+start_interface :-
         read_questions,
         % create window
         new(@Window, dialog('BuzzFeed')),
@@ -30,9 +30,8 @@ start :-
 
 show_question(6, Answers, LastAnswer) :-
         append_list(Answers, LastAnswer, NewAnswers),
-        write(NewAnswers), nl,
         answer(NewAnswers, Answer),
-        write(Answer), nl.
+        show_result(Answer).
 show_question(QuestionNumber, Answers, LastAnswer) :-
         % create window
         new(@Window, dialog('BuzzFeed')),
@@ -55,9 +54,8 @@ show_question(QuestionNumber, Answers, LastAnswer) :-
 
         NextQuestion is QuestionNumber + 1,
 
-
+        % adding last answer to list
         append_list(Answers, LastAnswer, NewAnswers),
-        write(NewAnswers), nl,
 
         % set first answer
         nth0(0, Choices, FirstAnswer),
@@ -86,6 +84,50 @@ show_question(QuestionNumber, Answers, LastAnswer) :-
             message(@Window, destroy),
             message(@prolog, show_question, NextQuestion, prolog(NewAnswers), prolog([4]))
             )), point(225, 450)),
+
+        % show window
+        send(@Window, open).
+
+show_result(Answer) :-
+        % create window
+        new(@Window, dialog('BuzzFeed')),
+
+        % resize window
+        send(@Window, size, size(600, 600)),
+
+        % set the background
+        new(@BackgroundImage, bitmap('src/assets/backgroundImage.jpg')),
+        send(@Window, display, @BackgroundImage, point(0, 0)),
+
+        % set the title text
+        new(@TitleText, text('Resultado')),
+        send(@TitleText, font, font(tahoma, bold, 35)),
+        send(@TitleText, colour(colour(white))),
+        send(@Window, display, @TitleText, point(200, 55)),
+
+        % set white background
+        new(@WhiteBackground, box(500,400)),
+        send(@WhiteBackground, colour(colour(white))),
+        send(@WhiteBackground, fill_pattern, colour(white)),
+        send(@Window, display, @WhiteBackground, point(50, 150)),
+
+        % set the presentation text
+        new(@PresentationText, text('Voce tirou:')),
+        send(@PresentationText, font, font(tahoma, bold, 30)),
+        % send(@PresentationText, colour(colour(white))),
+        send(@Window, display, @PresentationText, point(215, 300)),
+
+        % set the result text
+        new(@ResultText, text(Answer)),
+        send(@ResultText, font, font(tahoma, bold, 25)),
+        send(@ResultText, colour(colour(red))),
+        send(@Window, display, @ResultText, point(235, 350)),
+
+
+        % set cancel button
+        send(@Window, display, button(sair, and(
+            message(@Window, destroy))
+            ), point(275, 450)),
 
         % show window
         send(@Window, open).

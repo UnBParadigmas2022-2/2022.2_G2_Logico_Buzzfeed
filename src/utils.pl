@@ -102,7 +102,5 @@ answer(AnswerList, Answer) :-
     teams(Teams),
     compareAnswer(Teams, AnswerList, [], FinalList),
     getIndexFromAnswerTeam(FinalList, 0, 0, 0, Index),
-    getTeam(Teams, Index, Team),
-    string_concat('Você é torcedor do time: ', Team, Temp1),
-    string_concat(Temp1, '!', Answer).
+    getTeam(Teams, Index, Answer).
 answer(_, _, _, 'Desculpe, mas não encontramos um time de futebol para você.').

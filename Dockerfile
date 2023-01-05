@@ -4,4 +4,4 @@ WORKDIR /prolog
 
 COPY . .
 
-ENTRYPOINT ["swipl", "prolog/main.pl"]
+ENTRYPOINT ["swipl", "src/main.pl"]

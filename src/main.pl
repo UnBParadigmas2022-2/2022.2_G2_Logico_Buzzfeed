@@ -15,7 +15,7 @@
 
 % handle the menu options
 menu_option(1) :- start_quiz.
-menu_option(2) :- start.
+menu_option(2) :- start_interface.
 menu_option(3) :- exit.
 menu_option(_):- write('Não é uma opção válida\n\n'), nl, menu.
 
@@ -24,6 +24,8 @@ start_quiz :-
     read_questions,
     ask_questions(1, [], NewList),
     answer(NewList, Answer),
+
+    write('Você é torcedor do time:\n'),
     write(Answer), nl, exit.
 
 ask_questions(N, Answers, NewList) :-
