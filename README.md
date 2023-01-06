@@ -24,12 +24,34 @@ O projeto baseaia-se nos testes criados e disponíveis na plataforma BuzzFeed. O
 
 ## Screenshots
 
-Adicione 2 ou mais screenshots do projeto em termos de interface e/ou funcionamento.
+### Tela inicial CLI
+
+![Tela inicial CLI](assets/Screenshot_menu_inicial.png)
+
+### Tela opções questões CLI
+
+![Tela opções questões CLI](assets/Screenshot_menu_carregamento_questoes.png)
+
+### Tela pergunta
+
+![Tela pergunta](assets/Screenshot_menu_perguntas.png)
+
+### Tela Inicial GUI
+
+![Tela Inicial GUI](assets/Screenshot_tela_inicial_gui.jpg)
+
+### Tela Pergunta GUI
+
+![Tela Pergunta GUI](assets/Screenshot_tela_pergunta_gui.jpg)
+
+### Tela Resultado GUI
+
+![Tela Resultado GUI](assets/Screenshot_tela_resultado_gui.jpg)
 
 ## Instalação
 
-**Linguagens**: Prolog<br>
-**Tecnologias**: xxxxxx<br>
+**Linguagens**: Prolog e Python<br>
+**Tecnologias**: XPCE e Flask<br>
 Descreva os pré-requisitos para rodar o seu projeto e os comandos necessários.
 Insira um manual ou um script para auxiliar ainda mais.
 Gifs animados e outras ilustrações são bem-vindos!
@@ -38,33 +60,73 @@ Gifs animados e outras ilustrações são bem-vindos!
 
 Existem duas principais maneiras de rodar esse projeto, a primeira utilizando o Dockerfile e a segunda o Makefile. Caso você não queira instalar o swipl diretamente em sua máquina, use o Docker. Porém, se você já tiver o swipl ou pretende instalar, use o comando `make`.
 
-### Exemplo utilizando o Docker
+OBS: não é possível executar com a interface gráfica usando docker, será necessário utilizar o swipl (com o make), mas ainda é possível executar com a API executando com o docker.
 
-Este repositório contém um Dockerfile para criar uma imagem Docker. Para usar a aplicação é necessário executar esta imagem.
+### Exemplo utilizando o Docker
 
 #### Pré-requisitos
 
 - O [Docker](https://www.docker.com/) deve estar instalado em sua máquina.
 
-#### Criando a Imagem
+#### Executando API e CLI
 
-Para criar a imagem Docker, execute o seguinte comando na raiz deste repositório:
-
-```bash
-docker build -t nome_da_imagem .
-```
-
-Isso criará a imagem com o nome nome_da_imagem. Você pode escolher qualquer nome desejar para a imagem.
-
-#### Executando a Imagem
-
-Para executar a imagem Docker, use o seguinte comando:
+Para executar a API e a CLI com o docker é possível utilizar o script `start_all`, pode ser utilizado pelo make ou executando direto pelo bash.
 
 ```bash
-docker run -it nome_da_imagem
+make start_all
+# OU
+bash scripts/start_all.sh
 ```
 
-Isso iniciará um novo container baseado na imagem e abrirá um terminal no container.
+#### Executando apenas a API
+
+Para executar a API e a CLI com o docker é possível utilizar o script `start_api`.
+
+```bash
+make start_api
+# OU
+bash scripts/start_api.sh
+```
+
+#### Parando e removendo todos os containers
+
+Para parar e remover todos os containers do docker é possível utilizar o script `stop_all`.
+
+```bash
+make stop_all
+# OU
+bash scripts/stop_all.sh
+```
+
+#### Parando e removendo o container da API
+
+Para parar e remover apenas o container da API é possível utilizar o script `stop_api`.
+
+```bash
+make stop_api
+# OU
+bash scripts/stop_api.sh
+```
+
+#### Parando e removendo todos os containers e imagens
+
+Para parar e remover todos os containers e imagens é possível utilizar o script `remove_all`.
+
+```bash
+make remove_all
+# OU
+bash scripts/remove_all.sh
+```
+
+#### Parando e removendo os containers e imagens da API
+
+Para parar e remover apenas o container e imagem da API é possível utilizar o script `remove_api`.
+
+```bash
+make remove_api
+# OU
+bash scripts/remove_api.sh
+```
 
 ### Exemplo utilizando o Makefile
 
@@ -76,6 +138,8 @@ Isso iniciará um novo container baseado na imagem e abrirá um terminal no cont
 #### Rodando o projeto
 
 No diretório raiz, simplesmente digite o comando `make` em seu terminal. Caso você não possua o comando make, ainda é possível rodar o projeto diretamente digitando `swipl -O -s src/main`.
+
+OBS: se desejar consumir perguntas da API, será necessário iniciar a API.
 
 ## Vídeo
 
