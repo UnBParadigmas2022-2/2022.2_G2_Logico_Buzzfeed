@@ -13,6 +13,7 @@ menu :-
     write('Bem-vindo ao Quiz! Escolha uma das opções abaixo:'), nl,
     write('1 - Iniciar o quiz no terminal'), nl,
     write('2 - Iniciar o quiz na interface grafica'), nl,
-    write('3 - Sair do programa'), nl,
+    write('3 - Adicionar novo time'), nl,
+    write('4 - Sair do programa'), nl,
     read(Choice),
     menu_option(Choice).

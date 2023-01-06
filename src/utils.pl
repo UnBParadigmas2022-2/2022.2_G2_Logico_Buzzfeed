@@ -104,3 +104,32 @@ answer(AnswerList, Answer) :-
     getIndexFromAnswerTeam(FinalList, 0, 0, 0, Index),
     getTeam(Teams, Index, Answer).
 answer(_, _, _, 'Desculpe, mas não encontramos um time de futebol para você.').
+
+save_team(NewT) :-
+    teams(TeamsList),
+    append_list(TeamsList, [NewT], NewTeamList), 
+    write_file(NewTeamList).
+
+write_file(NewList) :-  
+    open("teams.txt", write, File),
+    [Head|Tail] = NewList,
+    write(File, Head),
+    loop_print(File, Tail),
+    close(File).
+
+loop_print(File,[H1|T1]) :- T1 = [], write(File, ', '), write(File, H1), write(File, '.').
+loop_print(File,[H1|T1]) :- write(File, ', '), write(File, H1), loop_print(File, T1).
+
+% choices for the questions in add_teams
+allChoices([['Norte', 'Nordeste', 'Sudeste', 'Sul'], 
+              ['Verde', 'Branco', 'Vermelho', 'Azul'], 
+              ['Posse de Bola', 'Finalizações', 'Contra-ataque', 'Defesa Sólida'],
+              ['Fanaticos', 'Gostam de acompanhar', 'Torcida modinha', 'Estadios vazios']
+]).
+
+% appending the name of the team with the choices
+list_member(X,[X|_]).
+list_member(X,[_|TAIL]) :- list_member(X,TAIL).
+
+list_append(A,T,T) :- list_member(A,T),!.
+list_append(A,T,[A|T]).

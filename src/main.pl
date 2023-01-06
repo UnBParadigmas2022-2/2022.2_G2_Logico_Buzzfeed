@@ -16,7 +16,8 @@
 % handle the menu options
 menu_option(1) :- start_quiz.
 menu_option(2) :- start_interface.
-menu_option(3) :- exit.
+menu_option(3) :- add_teams.
+menu_option(4) :- exit.
 menu_option(_):- write('Não é uma opção válida\n\n'), nl, menu.
 
 % start the quiz and compute the final answer
@@ -50,5 +51,30 @@ write_choices([H|T], N) :-
     write_choices(T, Next).
 write_choices([], _) :- nl.
 
+% adding teams
+add_teams :-
+    read_questions,
+    write('Qual time deseja adicionar? (Não utilizar letras maiusculas)'), nl,
+    read(Team),
+    allChoices(AllChoices),
+    write('De qual região esse time pertence?'), nl,
+    [Choices1|_] = AllChoices,
+    write_choices(Choices1, 1),
+    read(Region),
+    write('Qual cor principal desse time?'), nl,
+    [_,Choice2,_,_] = AllChoices,
+    write_choices(Choice2, 1),
+    read(Color),
+    write('Qual a caracteristica do time?'), nl,
+    [_,_,Choice3,_] = AllChoices,
+    write_choices(Choice3, 1),
+    read(Quality),
+    write('Como é a torcida desse time?'), nl,
+    [_,_,_,Choice4] = AllChoices,
+    write_choices(Choice4, 1),
+    read(Fans),
+    list_append([Region, Region, Color, Quality, Fans], [Team], NewT),
+    save_team(NewT).
+   
 % exit the program
 exit :- halt.
