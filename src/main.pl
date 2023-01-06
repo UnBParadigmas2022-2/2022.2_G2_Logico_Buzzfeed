@@ -17,7 +17,7 @@
 menu_option(1) :- start_quiz.
 menu_option(2) :- start_interface.
 menu_option(3) :- add_teams.
-menu_option(3) :- exit.
+menu_option(4) :- exit.
 menu_option(_):- write('Não é uma opção válida\n\n'), nl, menu.
 
 % start the quiz and compute the final answer
@@ -51,13 +51,6 @@ write_choices([H|T], N) :-
     write_choices(T, Next).
 write_choices([], _) :- nl.
 
-% manipulate list
-
-append_list([],L,L).
-append_list([X1|L1],L2,[X1|L3]) :- append_list(L1,L2,L3).
-
-insert_answer(L, X, NewL) :- append_list(L, [X], NewL).
-
 % adding teams
 add_teams :-
     read_questions,
@@ -81,34 +74,7 @@ add_teams :-
     write_choices(Choice4, 1),
     read(Fans),
     list_append([Region, Region, Color, Quality, Fans], [Team], NewT),
-    teams(TeamsList),
-    append_list(TeamsList, [NewT], NewTeamList), 
-    write_file(NewTeamList).
-
-
-write_file(NewList) :-  
-    open("teams.txt", write, File),
-    [Head|Tail] = NewList,
-    write(File, Head),
-    loop_print(File, Tail),
-    close(File).
-
-loop_print(File,[H1|T1]) :- T1 = [], write(File, ', '), write(File, H1), write(File, '.').
-loop_print(File,[H1|T1]) :- write(File, ', '), write(File, H1), loop_print(File, T1).
-
-% choices for the questions in add_teams
-allChoices([['Norte', 'Nordeste', 'Sudeste', 'Sul'], 
-              ['Verde', 'Branco', 'Vermelho', 'Azul'], 
-              ['Posse de Bola', 'Finalizações', 'Contra-ataque', 'Defesa Sólida'],
-              ['Fanaticos', 'Gostam de acompanhar', 'Torcida modinha', 'Estadios vazios']
-]).
-
-% appending the name of the team with the choices
-list_member(X,[X|_]).
-list_member(X,[_|TAIL]) :- list_member(X,TAIL).
-
-list_append(A,T,T) :- list_member(A,T),!.
-list_append(A,T,[A|T]).
+    save_team(NewT).
    
 % exit the program
 exit :- halt.
