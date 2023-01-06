@@ -54,7 +54,7 @@ write_choices([], _) :- nl.
 % adding teams
 add_teams :-
     read_questions,
-    write('Qual time deseja adicionar?'), nl,
+    write('Qual time deseja adicionar? (Não utilizar letras maiusculas)'), nl,
     read(Team),
     allChoices(AllChoices),
     write('De qual região esse time pertence?'), nl,
